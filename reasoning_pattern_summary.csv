@@ -1,0 +1,24 @@
+Pattern,Count,Decision
+Other/Unspecified,452,Approval
+Safety Established,69,Approval
+Bioequivalence Demonstrated,19,Approval
+Sufficient Evidence,14,Approval
+FDA Agrees/Warrants Action,9,Approval
+Procedural Issue,7,Approval
+Insufficient Evidence,3,Approval
+Public Health Benefit,3,Approval
+Already Addressed/Moot,1,Approval
+Premature/Pending Action,1,Approval
+Other/Unspecified,1139,Denial
+Safety Established,94,Denial
+Procedural Issue,66,Denial
+Sufficient Evidence,53,Denial
+FDA Agrees/Warrants Action,34,Denial
+Bioequivalence Demonstrated,23,Denial
+Public Health Benefit,16,Denial
+Already Addressed/Moot,11,Denial
+Insufficient Evidence,9,Denial
+Enforcement Discretion,7,Denial
+Premature/Pending Action,7,Denial
+FDA Disagrees,1,Denial
+Outside FDA Authority,1,Denial

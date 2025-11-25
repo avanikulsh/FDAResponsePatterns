@@ -1,0 +1,32 @@
+# Large data files (too big for GitHub)
+complete_fda_petitions_with_text.csv
+enhanced_fda_petitions.csv
+merged_fda_petitions_with_text.csv
+
+# Original source CSVs (can be referenced separately)
+Documents_*.csv
+Dockets_*.csv
+
+# Temporary/intermediate files
+*.pyc
+__pycache__/
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Output logs
+*.log

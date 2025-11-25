@@ -1,0 +1,37 @@
+FDA RESPONSE PATTERN ANALYSIS
+================================================================================
+
+
+1. PETITIONER TYPE MATTERS:
+   • Highest success: Consultant (84.6% approval rate)
+   • Lowest success: Public Interest (14.3% approval rate)
+   • This suggests FDA may be more receptive to certain types of petitioners
+
+2. FDA CENTER VARIATION:
+   • Most approving: CVM (38.8% approval rate)
+   • Least approving: CFSAN (2.2% approval rate)
+   • Different centers have different approval patterns
+
+3. REPEAT PETITIONERS:
+   • Some petitioners have very high success rates (top: 100.0%)
+   • Others consistently denied (bottom: 0.0%)
+   • Experience and relationship with FDA may matter
+
+4. TEMPORAL PATTERNS:
+   • Analyzed 9 years of data
+   • Approval rates vary by year, suggesting policy shifts over time
+
+5. PETITION CONTENT:
+   • Generic drug petitions appear frequently in both approved and denied
+   • Labeling changes and stays of action are common themes
+   • Subject matter may influence decision
+
+OVERALL CONCLUSION:
+FDA decision-making shows clear patterns based on:
+- WHO is petitioning (petitioner type and specific organization)
+- WHICH center handles it (CDER vs CFSAN vs CDRH, etc.)
+- WHAT is being requested (generic approval, labeling, stay, etc.)
+- WHEN the petition is filed (temporal trends)
+
+These patterns suggest FDA responses are influenced by both the petitioner's
+profile and the nature of the request, not just the merits alone.

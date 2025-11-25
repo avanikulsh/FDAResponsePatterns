@@ -1,0 +1,307 @@
+SUMMARY
+Dataset: 12,200 FDA citizen petition documents (2000-2024)
+Focus: Understanding how FDA justifies approval and denial decisions
+
+We analyzed FDA reasoning patterns in 677 citizen petition responses
+(2000-2024) containing explicit rationale text. Categories were developed
+through a hybrid computational approach. First, TF-IDF analysis identified
+distinctive phrases in approval vs. denial letters (e.g., 'listed drug'
+appeared 147 times in approvals, 0 times in denials). Based on these
+distinctive phrases, we defined 6 approval and 9 denial categories.
+
+Next step (validation): We developed a multi-phrase scoring algorithm that counts occurrences of
+category-specific phrases and assigns each document to the category with
+the strongest textual evidence. To validate this approach, 1-2 people must manually
+independently code a stratified random sample of 90 documents (30 approvals,
+60 denials). We can then calculate the accuracy (%) of the automated categorization compared to manual coding, which would indicate substantial or moderate agreement. Specific steps can be found below.
+
+DATA SOURCES
+Original Data: 
+- ALL PETITION FILES folder in Allison’s Google Drive (12,200 records)
+- Documents_ 2001-2007 - 2001-2007 All Documents.csv (1,018 records)
+- Dockets_ 2007-2024 - All_Petitions_Simplified_2007to2024.csv (2,348 records)
+
+DATA EXTRACTION AND PROCESSING
+1.  Text extraction from the PDFs
+Method: PyMuPDF (fitz library)
+- Extracted first 10 pages from each PDF document
+- Identified scanned documents (images without text)
+- Total documents processed: 12,200
+- Documents with text >100 characters: 6,759 (55.4%)
+
+Script: extract_text_from_pdfs.py
+Output: complete_fda_petitions_with_text.csv
+
+2. Categorizing petitions into approvals, denials, and withdrawals
+Method: Regex pattern matching on document text
+- Approval patterns: "petition is granted", "we are granting", "approved"
+- Denial patterns: "petition is denied", "we are denying", "decline to grant"
+- Withdrawal patterns: "petition withdrawn", "petitioner withdrew"
+
+4,064 documents classified
+Script: enhance_data.py
+Output: enhanced_fda_petitions.csv (28 columns, 12,200 rows) - has the file text, a bit harder to read
+        enhanced_fda_petitions_SIMPLIFIED.csv (12 key columns) - no file text, easier to read
+
+3. Rationale Extraction (to avoid administrative boilerplate skewing the results, extracting the text from final response documents where the FDA is explaining its decision and rationale)
+Focused on final response documents with decisions
+- Filtered to final responses 
+- Extracted up to 1,000 characters of rationale text
+- Used regex patterns to locate decision justification sections
+  Patterns: "we are granting/denying", "because", "based on",
+           "we determined that", "after review"
+
+Script: create_rationale_dataset.py
+Output: fda_rationales_dataset.csv (678 documents with rationale text)
+        fda_rationales_summary.csv (pattern counts)
+
+Documents with rationales:
+- Approvals: 208
+- Denials: 407
+- Other: 63
+
+COMPUTATIONALLY DISCOVERING PATTERNS IN FDA RESPONSES
+1. TF-IDF Analysis
+Purpose: Identify distinctive phrases in approvals vs denials
+
+Method:
+- Combined all approval texts into single corpus
+- Combined all denial texts into single corpus
+- Applied TF-IDF with n-grams (unigrams, bigrams, trigrams)
+- Extracted top 30 distinctive terms for each category
+
+Example Findings:
+APPROVALS discuss:
+  - "listed drug" (147× in approvals, 0× in denials)
+  - "proposed drug" (123× in approvals, 0× in denials)
+  - "safety effectiveness" (116× in approvals, 0× in denials)
+
+DENIALS discuss:
+  - "denying petition" (76× in denials, 0× in approvals)
+  - "petition denied" (72× in denials, 0× in approvals)
+  - "cfr 10" (125× in denials, 0× in approvals) [procedural regulations]
+
+Insight: Approvals discuss DRUGS (substantive), denials discuss PETITIONS (procedural)
+
+Script: discover_patterns_computational.py
+Output: distinctive_approval_terms.csv
+        distinctive_denial_terms.csv
+        approval_ngrams.csv
+        denial_ngrams.csv
+        contrastive_phrases.csv
+
+2. N-gram Frequency Analysis
+Method: Extracted 2-word and 3-word phrases, counted occurrences
+
+Most common denial bigrams:
+  - "21 cfr" (220 occurrences) - regulatory citations
+  - "cfr 10" (125 occurrences) - procedural regulations
+  - "denying petition" (76 occurrences)
+
+Most common approval bigrams:
+  - "drug product" (339 occurrences)
+  - "safety effectiveness" (116 occurrences)
+  - "listed drug" (147 occurrences)
+
+Script: discover_patterns_computational.py
+Output: (included in files above)
+
+FDA RESPONSE CATEGORIZATION METHODOLOGY
+Categories were developed through a hybrid approach:
+
+Step 1: Computational Discovery (TF-IDF)
+  - Identified distinctive phrases in approval vs denial text
+  - Found procedural language dominates denials (e.g., "cfr 10", "premature")
+  - Found substantive language dominates approvals (e.g., "bioequivalence", "safety")
+
+Step 2: Category Definition
+  - Defined 6 approval categories based on distinctive phrases
+  - Defined 9 denial categories (4 procedural, 4 substantive, 1 enforcement)
+  - Categories align with FDA regulatory framework
+
+Step 3: Multi-Phrase Scoring
+  - For each category, defined 5-10 distinctive phrases
+  - Scored each document by counting phrase occurrences
+  - Assigned to category with highest score
+  - Reported confidence: high (≥2 phrases), medium (1 phrase), low (0 phrases)
+
+File: CATEGORY_DEFINITIONS.md 
+
+APPROVAL CATEGORIES (6 total)
+1. Bioequivalence/Therapeutic Equivalence
+   Phrases: bioequivalent, BE study, therapeutic equivalence, AB-rated,
+            listed drug, reference listed drug, ANDA, orange book
+
+2. Safety Established
+   Phrases: safety, safe, no safety concern, safety profile,
+            safety effectiveness, adverse events, toxicity
+
+3. Sufficient Evidence
+   Phrases: data support, evidence, studies, demonstrated,
+            adequate information, sufficient data, clinical trials
+
+4. Public Health Benefit
+   Phrases: public health, public interest, benefit, access, availability
+
+5. FDA Concurrence
+   Phrases: agree, granted, merit, warrant, appropriate, concur
+
+6. Other Approval Reason
+   (Catch-all for approvals not matching above)
+
+DENIAL CATEGORIES (9 total)
+PROCEDURAL CATEGORIES (4):
+
+1. Procedural - Premature/Pending
+   Phrases: premature, pending, ongoing, under review, not yet,
+            before, prior to, awaiting
+
+2. Procedural - Administrative Deficiency
+   Phrases: procedural, administrative, 21 CFR 10, CFR 10,
+            regulation, format, submission, compliance
+
+3. Procedural - Already Addressed/Moot
+   Phrases: moot, already, existing, previously, current,
+            adequate, addressed
+
+4. Enforcement Discretion
+   Phrases: enforcement discretion, enforcement priorities,
+            limited resources, priorities
+
+SUBSTANTIVE CATEGORIES (4):
+
+5. Substantive - Insufficient Evidence
+   Phrases: insufficient, lack, inadequate, no evidence, no data,
+            insufficient evidence, inadequate data, lack of evidence
+
+6. Substantive - FDA Disagrees
+   Phrases: disagree, not persuaded, unpersuasive, do not agree,
+            not convinced, not support, reject
+
+7. Substantive - No Public Health Concern
+   Phrases: no public health, no safety concern, no risk,
+            not pose, no evidence of harm
+
+8. Substantive - Outside FDA Authority
+   Phrases: no authority, outside, jurisdiction, scope,
+            not appropriate for, beyond
+
+
+
+9. Other Denial Reason
+   (Catch-all for denials not matching above)
+
+Categorization Implementation
+Script: categorize_all_enhanced.py
+
+Process:
+1. Load fda_rationales_dataset.csv (678 documents)
+2. For each document:
+   a. Convert rationale text to lowercase
+   b. Count occurrences of phrases for each category
+   c. Assign to category with highest phrase count
+   d. Set confidence: high (≥2 phrases), medium (1), low (0)
+   e. Record key phrases found
+3. Save categorized results
+
+Output: fda_rationales_enhanced_categories.csv
+        - All 677 documents with assigned categories
+        - Includes: Enhanced_Category, Confidence, Key_Phrases
+
+RESULTS
+
+Approval Patterns (n=208)
+------------------------------
+Bioequivalence/Therapeutic Equivalence:  105 (50.5%)
+Other Approval Reason:                    43 (20.7%)
+Safety Established:                       31 (14.9%)
+FDA Concurrence:                          13 (6.2%)
+Sufficient Evidence:                       8 (3.8%)
+Public Health Benefit:                     8 (3.8%)
+
+Denial Patterns (n=407)
+----------------------------
+Procedural - Administrative Deficiency:  237 (58.2%)
+Other Denial Reason:                      74 (18.2%)
+Procedural - Already Addressed/Moot:      38 (9.3%)
+Procedural - Premature/Pending:           36 (8.8%)
+Substantive - Insufficient Evidence:       8 (2.0%)
+Enforcement Discretion:                    5 (1.2%)
+Substantive - Outside FDA Authority:       5 (1.2%)
+Substantive - FDA Disagrees:               4 (1.0%)
+
+KEY FINDING: Procedural vs Substantive
+-------------------------------------------
+Of 407 denials:
+- Procedural Dismissals: 316 (77.6%)
+- Substantive Decisions: 17 (4.2%)
+- Other/Unclassified: 74 (18.2%)
+
+Confidence Distribution
+High confidence:   274 (40.5%)
+Medium confidence: 224 (33.1%)
+Low confidence:    179 (26.4%)
+
+VALIDATION METHODOLOGY (NEXT STEPS)
+
+To establish validity of automated categorization:
+
+Validation Sample
+Created stratified random sample:
+- 30 approvals (random seed: 42)
+- 60 denials (random seed: 42)
+- Total: 90 documents (13.3% of corpus)
+
+File: validation_sample_for_manual_coding.csv
+
+Columns:
+- Document_ID
+- Decision
+- Rationale_Text
+- Document_Link (for viewing full PDF)
+- Manual_Category (EMPTY - for coder to fill)
+- Manual_Notes (EMPTY - for coder notes)
+- Coder_Initials (EMPTY - for accountability)
+
+Manual Coding Protocol
+---------------------------
+Instructions for human coder:
+
+1. Open validation_sample_for_manual_coding.csv
+2. For each document:
+   a. Read Rationale_Text carefully
+   b. Consult CATEGORY_DEFINITIONS.md
+   c. Assign ONE category based on PRIMARY reasoning
+   d. Enter category name in Manual_Category column
+   e. Add any notes in Manual_Notes column
+   f. Enter your initials in Coder_Initials column
+3. Save file as validation_sample_CODED.csv
+
+Coding Guidelines:
+- Choose the DOMINANT reason if multiple present
+- Use exact category names from CATEGORY_DEFINITIONS.md
+- If truly ambiguous, note in Manual_Notes
+
+Reference: CATEGORY_DEFINITIONS.md (complete category descriptions)
+
+Agreement Calculation
+After manual coding complete, run agreement calculator:
+
+Script: to be created
+
+Metrics to calculate:
+1. Overall accuracy (% agreement)
+2. Cohen's kappa (inter-rater reliability)
+3. Confusion matrix (where disagreements occur)
+4. Per-category accuracy
+
+Target metrics for validity:
+- Overall accuracy: >80%
+- Cohen's kappa: >0.70 (substantial agreement)
+
+Current Limitations:
+1. Text extraction limited to first 10 pages (performance optimization)
+2. 154 scanned PDFs have minimal text (OCR not performed)
+3. Only 33% of documents have mined response types
+4. Automated categorization requires validation (Step 1-2)
+5. Categories are based on text patterns, not legal expertise

@@ -1,0 +1,32 @@
+FDA RATIONALE ANALYSIS
+================================================================================
+
+
+1. SUBSTANTIVENESS OF RATIONALES:
+   Approved responses:
+     • Highly detailed: 129 (62.0%)
+     • Minimal: 1 (0.5%)
+
+   Denied responses:
+     • Highly detailed: 313 (76.9%)
+     • Minimal: 14 (3.4%)
+
+2. MOST COMMON DENIAL REASONS:
+Denial_Reason
+Other/Unspecified                 128
+Premature/Pending other action    126
+Procedural issue                   58
+Enforcement discretion             37
+Insufficient evidence/data         29
+
+3. KEY TERMS IN FDA REASONING:
+   Approvals emphasize: safety, generic, appropriate, regulation, therapeutic
+   Denials emphasize: regulation, safety, appropriate, data, labeling
+
+4. DOES RATIONALE QUALITY VARY BY PETITIONER?
+   Analyzing whether FDA provides more detailed justifications to certain petitioners...
+
+OVERALL CONCLUSION:
+FDA's rationales reveal how they justify decisions. Analysis shows whether
+FDA provides substantive scientific reasoning vs procedural dismissals, and
+whether rationale depth correlates with petitioner type.

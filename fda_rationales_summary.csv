@@ -1,0 +1,21 @@
+Decision,FDA_Reasoning_Category,Count
+Approved,APPROVAL: Bioequivalence Demonstrated,124
+Approved,APPROVAL: Safety Established,65
+Approved,APPROVAL: Sufficient Evidence,7
+Approved,APPROVAL: Public Health Benefit,5
+Approved,APPROVAL: Other/General Approval,4
+Approved,APPROVAL: FDA Agrees with Petitioner,3
+Denied,DENIAL: Premature/Pending Other Action,119
+Denied,DENIAL: Procedural Deficiency,96
+Denied,DENIAL: FDA Disagrees with Petition,64
+Denied,DENIAL: Already Addressed/Moot,50
+Denied,DENIAL: Insufficient Evidence/Data,46
+Denied,DENIAL: Enforcement Discretion,17
+Denied,DENIAL: Other/Unspecified Reason,14
+Denied,DENIAL: Scientific/Technical Disagreement,1
+No response,OTHER: Unknown Decision Type,2
+Partially Approved,"PARTIAL: Some Requests Granted, Others Denied",16
+Partially approved or denied,OTHER: Unknown Decision Type,21
+Response received,OTHER: Unknown Decision Type,21
+Withdrawn,WITHDRAWN: Petitioner Withdrew Request,2
+further info requested,OTHER: Unknown Decision Type,1
