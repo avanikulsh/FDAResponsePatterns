@@ -388,45 +388,4 @@ with open('/Users/avani/FDA_Analysis/CATEGORY_DEFINITIONS.md', 'w') as f:
 
 print("\n✓ Saved category definitions: CATEGORY_DEFINITIONS.md")
 
-# ============================================================================
-# INSTRUCTIONS FOR FULL IMPLEMENTATION
-# ============================================================================
 
-print("\n" + "="*80)
-print("NEXT STEPS FOR FULL IMPLEMENTATION")
-print("="*80)
-
-print("""
-This demonstration used simple keyword matching as a placeholder.
-
-For actual LLM categorization, you have two options:
-
-OPTION 1: Use Claude API (Most Reproducible)
-  - Install: pip3 install anthropic
-  - Get API key from: https://console.anthropic.com/
-  - Replace mock_llm_categorize() with actual API calls
-  - Model: claude-3-5-sonnet-20241022
-  - Temperature: 0 (for reproducibility)
-  - Cost: ~$3-4 per 1000 messages for Claude 3.5 Sonnet
-
-OPTION 2: Use Claude Code (Me!)
-  - I can categorize all 678 documents right now
-  - Fully reproducible (same prompts, same model)
-  - Free (no API costs)
-  - Same rigor as API version
-
-For validation:
-  1. Manually code the validation sample (90 documents)
-  2. Compare LLM categories to manual categories
-  3. Calculate Cohen's kappa and accuracy
-  4. Report in methods section
-
-Files created:
-  - llm_categorization_demo.csv (demo results)
-  - validation_sample_for_manual_coding.csv (for validation)
-  - CATEGORY_DEFINITIONS.md (category reference)
-""")
-
-print("="*80)
-print("DEMONSTRATION COMPLETE")
-print("="*80)
